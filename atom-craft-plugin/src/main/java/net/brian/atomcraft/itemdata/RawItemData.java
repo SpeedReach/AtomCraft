@@ -10,11 +10,11 @@ import java.lang.reflect.Type;
 
 public class RawItemData {
 
-        @Getter private final JsonObject rawJson;
+    @Getter private final JsonObject rawJson;
 
-        public RawItemData(JsonObject rawJson){
+    public RawItemData(JsonObject rawJson){
             this.rawJson = rawJson;
-        }
+    }
 
     public static class Serializer implements JsonSerializer<RawItemData> {
 

@@ -1,6 +1,7 @@
-package net.brian.atomcraft.api;
+package net.brian.atomcraft.api.services;
 
 import java.util.Optional;
+
 
 public interface ItemDataRegistry {
 

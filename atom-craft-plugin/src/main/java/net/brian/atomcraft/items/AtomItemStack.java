@@ -1,8 +1,12 @@
 package net.brian.atomcraft.items;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.Getter;
+import net.brian.atomcraft.AtomCraftPlugin;
 import net.brian.atomcraft.api.AtomItem;
+import net.brian.atomcraft.api.ConfiguredItem;
 import net.brian.atomcraft.api.ItemBuilder;
+import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -11,6 +15,12 @@ import java.util.*;
 
 public class AtomItemStack implements AtomItem {
 
+    @Getter
+    final String id;
+
+    @Getter
+    final int version;
+
     final ItemStack itemStack;
     final HashMap<String, Double> flatPlayerStats;
     final HashMap<String, Double> relativePlayerStats;
@@ -18,22 +28,17 @@ public class AtomItemStack implements AtomItem {
     final HashMap<String, Object> data;
 
 
-    public AtomItemStack(ItemStack itemStack,ItemJsonData jsonData){
+    public AtomItemStack(ItemStack itemStack, ItemJsonData jsonData){
         this.flatPlayerStats = jsonData.flatPlayerStats();
         this.relativePlayerStats = jsonData.relativePlayerStats();
         this.modifiers = jsonData.modifiers();
         this.data = jsonData.data();
         this.itemStack = itemStack;
+
+        this.id = (String) jsonData.data().getOrDefault("id","");
+        this.version = (int) jsonData.data().getOrDefault("version",0);
     }
 
-
-    public AtomItemStack(ItemStack itemStack, Map<String, Double> flatPlayerStats, Map<String, Double> relativePlayerStats, Map<String, ItemModifierData> modifiers, Map<String, Object> data) {
-        this.flatPlayerStats = new  HashMap<>(flatPlayerStats);
-        this.relativePlayerStats = new  HashMap<>(relativePlayerStats);
-        this.modifiers = new  HashMap<>(modifiers);
-        this.data = new  HashMap<>(data);
-        this.itemStack = itemStack;
-    }
 
     @Override
     public ImmutableMap<String, Double> getFlatPlayerStats() {
@@ -68,17 +73,11 @@ public class AtomItemStack implements AtomItem {
         if(rawLore == null){
             rawLore = new ArrayList<>();
         }
-
+        //TODO empty ConfiguredItem
+        ConfiguredItem configuredItem = AtomCraftPlugin.instance.getConfigItemRegistry().getItem(id).orElse(null);
         return new AtomItemBuilder(
-                itemStack.getType(),
-                rawLore,
-                modelData,
-                new ItemJsonData(
-                        flatPlayerStats,
-                        relativePlayerStats,
-                        modifiers,
-                        data
-                )
+                configuredItem,
+                modifiers
         );
     }
 

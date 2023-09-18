@@ -7,7 +7,7 @@ public interface ItemModifier<T extends ItemModifierData> {
 
     String getID();
 
-    ItemBuilder apply(ItemBuilder builder,T modifierData);
+    ItemBuilder.Cache apply(ItemBuilder.Cache builderCache,T modifierData);
 
     int getPriority();
 

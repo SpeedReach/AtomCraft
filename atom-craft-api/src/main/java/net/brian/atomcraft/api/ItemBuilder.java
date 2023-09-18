@@ -2,10 +2,13 @@ package net.brian.atomcraft.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
+import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.function.BiFunction;
 
 public interface ItemBuilder {
@@ -34,4 +37,15 @@ public interface ItemBuilder {
 
 
     ItemStack build();
+
+
+    record Cache(
+            HashMap<String,Double> flatPlayerStats,
+            HashMap<String,Double> relativePlayerStats,
+            HashMap<String,Object> data,
+            HashMap<String,ItemModifierData> modifiers
+    ) {
+
+
+    }
 }

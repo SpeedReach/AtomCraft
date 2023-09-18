@@ -3,7 +3,6 @@ package net.brian.atomcraft.itemmodifiers.gemstone;
 import lombok.Getter;
 import net.brian.atomcraft.api.ItemBuilder;
 import net.brian.atomcraft.api.ItemModifier;
-import net.brian.atomcraft.itemmodifiers.gemstone.GemstoneData;
 
 public class GemStoneModifier implements ItemModifier<GemstoneData> {
 
@@ -12,10 +11,10 @@ public class GemStoneModifier implements ItemModifier<GemstoneData> {
 
 
     @Override
-    public ItemBuilder apply(ItemBuilder builder, GemstoneData modifierData) {
+    public ItemBuilder.Cache apply(ItemBuilder.Cache cache, GemstoneData modifierData) {
         for(GemstoneData.StatModifier modifier : modifierData.getModifiers()){
             switch (modifier.type()){
-                case FLAT -> builder.computeFlatPlayerStat(modifier.target(), (ignore, oldValue) -> {
+                case FLAT -> cache.flatPlayerStats().compute(modifier.target(), (ignore, oldValue) -> {
                     if(oldValue == null){
                         return modifier.value();
                     }
@@ -23,7 +22,7 @@ public class GemStoneModifier implements ItemModifier<GemstoneData> {
                         return oldValue + modifier.value();
                     }
                 });
-                case RELATIVE -> builder.computeRelativePlayerStat(modifier.target(), (ignore, oldValue) -> {
+                case RELATIVE -> cache.relativePlayerStats().compute(modifier.target(), (ignore, oldValue) -> {
                     if(oldValue == null){
                         return modifier.value();
                     }
@@ -33,7 +32,7 @@ public class GemStoneModifier implements ItemModifier<GemstoneData> {
                 });
             }
         }
-        return builder;
+        return cache;
     }
 
     @Override

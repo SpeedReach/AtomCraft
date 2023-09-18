@@ -1,4 +1,4 @@
-package net.brian.atomcraft.items;
+package net.brian.atomcraft.itemdata;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
@@ -14,10 +14,13 @@ public class RawItemModifierData extends RawItemData implements ItemModifierData
     private final String id;
 
 
-    RawItemModifierData(String id,String type, JsonObject rawJson) {
+    public RawItemModifierData(String id, String type, JsonObject rawJson) {
         super(rawJson);
         this.id = id;
         this.type = type;
     }
+
+
+
 
 }

@@ -1,21 +1,24 @@
 package net.brian.atomcraft.items;
 
 import com.google.common.collect.ImmutableMap;
+import net.brian.atomcraft.AtomCraftPlugin;
 import net.brian.atomcraft.api.ItemBuilder;
+import net.brian.atomcraft.api.ItemModifier;
+import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import net.brian.atomcraft.api.ConfiguredItem;
 
-
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-public class AtomItemBuilder implements ItemBuilder {
 
+public class  AtomItemBuilder implements ItemBuilder {
 
     final Material material;
     final int modelData;
@@ -25,26 +28,15 @@ public class AtomItemBuilder implements ItemBuilder {
     final HashMap<String, ItemModifierData> modifiers;
     final HashMap<String, Object> data;
 
+    public AtomItemBuilder(ConfiguredItem configuredItem, Map<String,ItemModifierData> modifiers){
+        material = configuredItem.getMaterial();
+        modelData = configuredItem.getModelData();
+        rawLore = configuredItem.getRawLore();
 
-    public AtomItemBuilder(ConfiguredItem configuredItem){
-        material = configuredItem.material();
-        modelData = configuredItem.modelData();
-        rawLore = configuredItem.rawLore();
-        ItemJsonData itemJsonData = configuredItem.jsonData();
-        flatPlayerStats = new HashMap<>(itemJsonData.flatPlayerStats());
-        relativePlayerStats = new HashMap<>(itemJsonData.relativePlayerStats());
-        modifiers = new HashMap<>(itemJsonData.modifiers());
-        data = new HashMap<>(itemJsonData.data());
-    }
-
-    public AtomItemBuilder(Material material, List<String> rawLore, int modelData,ItemJsonData jsonData){
-        this.material = material;
-        this.modelData = modelData;
-        this.rawLore = rawLore;
-        this.flatPlayerStats = jsonData.flatPlayerStats();
-        this.relativePlayerStats = jsonData.relativePlayerStats();
-        this.modifiers = jsonData.modifiers();
-        this.data = jsonData.data();
+        flatPlayerStats = new HashMap<>(configuredItem.getFlatPlayerStats());
+        relativePlayerStats = new HashMap<>(configuredItem.getRelativePlayerStats());
+        this.modifiers = new HashMap<>(modifiers);
+        data = new HashMap<>(configuredItem.getData());
     }
 
 
@@ -108,7 +100,8 @@ public class AtomItemBuilder implements ItemBuilder {
 
     @Override
     public ItemBuilder add(ItemModifierData data) {
-        return null;
+        modifiers.put(data.getId(),data);
+        return this;
     }
 
     @Override
@@ -116,12 +109,20 @@ public class AtomItemBuilder implements ItemBuilder {
         return Optional.ofNullable(data.get(id));
     }
 
+
+
     @Override
     public ItemStack build() {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setCustomModelData(modelData);
-
+        Cache cache = new Cache(flatPlayerStats,relativePlayerStats,data,modifiers);
+        modifiers.forEach((id,modifierData) -> {
+            AtomCraftPlugin.getInstance().getModifierRegistry().getModifier(id).ifPresent(modifier -> {
+                modifier.apply(cache,modifierData);
+            });
+        });
         return null;
     }
+
 }

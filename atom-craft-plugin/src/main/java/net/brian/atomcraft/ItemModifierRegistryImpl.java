@@ -2,12 +2,11 @@ package net.brian.atomcraft;
 
 import net.brian.atomcraft.api.AtomCraft;
 import net.brian.atomcraft.api.ItemModifier;
-import net.brian.atomcraft.api.ItemModifierRegistry;
+import net.brian.atomcraft.api.services.ItemModifierRegistry;
 import net.brian.atomcraft.api.data.ItemModifierData;
 
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.function.ToDoubleBiFunction;
 
 public class ItemModifierRegistryImpl implements ItemModifierRegistry {
 

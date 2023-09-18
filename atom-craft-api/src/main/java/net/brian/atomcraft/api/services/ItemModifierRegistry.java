@@ -1,8 +1,10 @@
-package net.brian.atomcraft.api;
+package net.brian.atomcraft.api.services;
 
+import net.brian.atomcraft.api.ItemModifier;
 import net.brian.atomcraft.api.data.ItemModifierData;
 
 import java.util.Optional;
+
 
 public interface ItemModifierRegistry {
 
