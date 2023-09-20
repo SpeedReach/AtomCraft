@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface ConfiguredItem{
 
-    int getVersion();
     String getId();
     Material getMaterial();
     int getModelData();

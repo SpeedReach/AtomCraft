@@ -7,6 +7,6 @@ public interface ItemDataRegistry {
 
     <T> void register(String id, Class<T> dataClass);
 
-    <T> Optional<Class<T>> getDataClass(String id);
+    Optional<Class<?>> getDataClass(String id);
 
 }

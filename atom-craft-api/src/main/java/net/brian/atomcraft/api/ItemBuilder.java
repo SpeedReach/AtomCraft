@@ -38,14 +38,4 @@ public interface ItemBuilder {
 
     ItemStack build();
 
-
-    record Cache(
-            HashMap<String,Double> flatPlayerStats,
-            HashMap<String,Double> relativePlayerStats,
-            HashMap<String,Object> data,
-            HashMap<String,ItemModifierData> modifiers
-    ) {
-
-
-    }
 }

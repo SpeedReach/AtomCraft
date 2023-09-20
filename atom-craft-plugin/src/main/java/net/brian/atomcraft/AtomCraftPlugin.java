@@ -2,10 +2,7 @@ package net.brian.atomcraft;
 
 import lombok.Getter;
 import net.brian.atomcraft.api.AtomCraft;
-import net.brian.atomcraft.api.services.ConfigItemRegistry;
-import net.brian.atomcraft.api.services.ItemDataRegistry;
-import net.brian.atomcraft.api.services.ItemModifierRegistry;
-import net.brian.atomcraft.api.services.PlayerStatsImplBridge;
+import net.brian.atomcraft.api.services.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
@@ -26,11 +23,17 @@ public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
     @Getter
     private ConfigItemRegistry configItemRegistry;
 
+    @Getter
+    private GsonProvider gsonProvider;
+
+    @Getter
+    private AtomItemStackBridge itemStackBridge;
+
     @Override
     public void onEnable() {
         instance = this;
         modifierRegistry = new ItemModifierRegistryImpl(this);
-
+        gsonProvider = new net.brian.atomcraft.json.GsonProvider();
     }
 
 }

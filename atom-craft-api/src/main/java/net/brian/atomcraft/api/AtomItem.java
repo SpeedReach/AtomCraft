@@ -9,8 +9,6 @@ import java.util.Optional;
 public interface AtomItem {
 
     String getId();
-    int getVersion();
-
     ImmutableMap<String, Double> getFlatPlayerStats();
     ImmutableMap<String, Double> getRelativePlayerStats();
     ImmutableMap<String, ItemModifierData> getModifiers();

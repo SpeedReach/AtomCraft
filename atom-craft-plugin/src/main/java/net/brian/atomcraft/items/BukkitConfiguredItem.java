@@ -12,14 +12,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BukkitConfiguredItem implements ConfiguredItem{
 
     @Getter
     final String id;
-
-    @Getter
-    final int version;
 
     @Getter
     final Material material;
@@ -40,7 +38,6 @@ public class BukkitConfiguredItem implements ConfiguredItem{
 
     public BukkitConfiguredItem(ConfigurationSection config){
         this.id = config.getString("id","");
-        this.version = config.getInt("version",0);
         this.material = Material.valueOf(config.getString("material",Material.STONE.name()));
         this.modelData = config.getInt("model-data",0);
         this.rawLore = ImmutableList.copyOf(config.getStringList("lore"));
@@ -49,6 +46,19 @@ public class BukkitConfiguredItem implements ConfiguredItem{
         this.data = ImmutableMap.copyOf((HashMap<String, Object>) config.get("data"));
     }
 
+    public BukkitConfiguredItem(String id, Material material, int modelData, List<String> rawLore, Map<String, Double> flatPlayerStats, Map<String, Double> relativePlayerStats, Map<String, Object> data) {
+        this.id = id;
+        this.material = material;
+        this.modelData = modelData;
+        this.rawLore = ImmutableList.copyOf(rawLore);
+        this.flatPlayerStats = ImmutableMap.copyOf(flatPlayerStats);
+        this.relativePlayerStats = ImmutableMap.copyOf(relativePlayerStats);
+        this.data = ImmutableMap.copyOf(data);
+    }
+
+    public static BukkitConfiguredItem empty(String id){
+        return new BukkitConfiguredItem(id  ,Material.STONE,0,new ArrayList<>(),Map.of(),Map.of(),Map.of());
+    }
 
 
 }

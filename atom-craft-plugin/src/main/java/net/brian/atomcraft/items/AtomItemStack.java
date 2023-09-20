@@ -18,9 +18,6 @@ public class AtomItemStack implements AtomItem {
     @Getter
     final String id;
 
-    @Getter
-    final int version;
-
     final ItemStack itemStack;
     final HashMap<String, Double> flatPlayerStats;
     final HashMap<String, Double> relativePlayerStats;
@@ -36,7 +33,6 @@ public class AtomItemStack implements AtomItem {
         this.itemStack = itemStack;
 
         this.id = (String) jsonData.data().getOrDefault("id","");
-        this.version = (int) jsonData.data().getOrDefault("version",0);
     }
 
 
@@ -73,12 +69,15 @@ public class AtomItemStack implements AtomItem {
         if(rawLore == null){
             rawLore = new ArrayList<>();
         }
-        //TODO empty ConfiguredItem
-        ConfiguredItem configuredItem = AtomCraftPlugin.instance.getConfigItemRegistry().getItem(id).orElse(null);
-        return new AtomItemBuilder(
-                configuredItem,
+
+        Optional<ConfiguredItem> configuredItem = AtomCraftPlugin.instance.getConfigItemRegistry().getItem(id);
+        return configuredItem.map(item -> new AtomItemBuilder(
+                item,
                 modifiers
-        );
+        )).orElseGet(() -> new AtomItemBuilder(
+                BukkitConfiguredItem.empty(id),
+                modifiers
+        ));
     }
 
     @Override

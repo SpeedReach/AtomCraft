@@ -1,10 +1,7 @@
 package net.brian.atomcraft.api;
 
 
-import net.brian.atomcraft.api.services.ConfigItemRegistry;
-import net.brian.atomcraft.api.services.ItemDataRegistry;
-import net.brian.atomcraft.api.services.ItemModifierRegistry;
-import net.brian.atomcraft.api.services.PlayerStatsImplBridge;
+import net.brian.atomcraft.api.services.*;
 
 public interface AtomCraft {
 
@@ -15,5 +12,9 @@ public interface AtomCraft {
     PlayerStatsImplBridge getStatsImplBridge();
 
     ConfigItemRegistry getConfigItemRegistry();
+
+    GsonProvider getGsonProvider();
+
+    AtomItemStackBridge getItemStackBridge();
 
 }

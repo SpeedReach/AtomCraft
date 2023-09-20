@@ -20,6 +20,7 @@ import java.util.function.BiFunction;
 
 public class  AtomItemBuilder implements ItemBuilder {
 
+    final String id;
     final Material material;
     final int modelData;
     final List<String> rawLore;
@@ -29,6 +30,7 @@ public class  AtomItemBuilder implements ItemBuilder {
     final HashMap<String, Object> data;
 
     public AtomItemBuilder(ConfiguredItem configuredItem, Map<String,ItemModifierData> modifiers){
+        id = configuredItem.getId();
         material = configuredItem.getMaterial();
         modelData = configuredItem.getModelData();
         rawLore = configuredItem.getRawLore();
@@ -116,13 +118,15 @@ public class  AtomItemBuilder implements ItemBuilder {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setCustomModelData(modelData);
-        Cache cache = new Cache(flatPlayerStats,relativePlayerStats,data,modifiers);
-        modifiers.forEach((id,modifierData) -> {
-            AtomCraftPlugin.getInstance().getModifierRegistry().getModifier(id).ifPresent(modifier -> {
+        ItemJsonData cache = new ItemJsonData(id,flatPlayerStats,relativePlayerStats,modifiers,data);
+        modifiers.forEach((modifierKey,modifierData) -> {
+            AtomCraftPlugin.getInstance().getModifierRegistry().getModifier(modifierKey).ifPresent(modifier -> {
                 modifier.apply(cache,modifierData);
             });
         });
-        return null;
+        meta = AtomCraftPlugin.getInstance().getItemStackBridge().writeJson(meta,cache);
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 
 }
