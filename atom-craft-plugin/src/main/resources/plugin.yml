@@ -1,4 +1,4 @@
-name: "FantasyItems"
-main: "net.brian.fantasyitems.FantasyItems"
+name: "AtomCraft"
+main: "net.brian.atomcraft.AtomCraftPlugin"
 version: 1.0
 

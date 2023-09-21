@@ -71,13 +71,7 @@ public class AtomItemStack implements AtomItem {
         }
 
         Optional<ConfiguredItem> configuredItem = AtomCraftPlugin.instance.getConfigItemRegistry().getItem(id);
-        return configuredItem.map(item -> new AtomItemBuilder(
-                item,
-                modifiers
-        )).orElseGet(() -> new AtomItemBuilder(
-                BukkitConfiguredItem.empty(id),
-                modifiers
-        ));
+        return  null;
     }
 
     @Override

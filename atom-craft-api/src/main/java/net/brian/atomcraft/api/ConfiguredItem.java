@@ -22,4 +22,5 @@ public interface ConfiguredItem{
 
     ImmutableMap<String, Object> getData();
 
+    ImmutableList<ItemModifierData> getModifiers();
 }

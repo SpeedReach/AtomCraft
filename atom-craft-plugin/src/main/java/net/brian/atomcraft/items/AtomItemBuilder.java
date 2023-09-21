@@ -11,11 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import net.brian.atomcraft.api.ConfiguredItem;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 
 public class  AtomItemBuilder implements ItemBuilder {
@@ -29,7 +27,7 @@ public class  AtomItemBuilder implements ItemBuilder {
     final HashMap<String, ItemModifierData> modifiers;
     final HashMap<String, Object> data;
 
-    public AtomItemBuilder(ConfiguredItem configuredItem, Map<String,ItemModifierData> modifiers){
+    public AtomItemBuilder(ConfiguredItem configuredItem){
         id = configuredItem.getId();
         material = configuredItem.getMaterial();
         modelData = configuredItem.getModelData();
@@ -37,10 +35,10 @@ public class  AtomItemBuilder implements ItemBuilder {
 
         flatPlayerStats = new HashMap<>(configuredItem.getFlatPlayerStats());
         relativePlayerStats = new HashMap<>(configuredItem.getRelativePlayerStats());
-        this.modifiers = new HashMap<>(modifiers);
         data = new HashMap<>(configuredItem.getData());
+        this.modifiers = configuredItem.getModifiers().stream().map((d) -> Map.entry(UUID.randomUUID().toString(),d))
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue,(a,b)->b,HashMap::new));
     }
-
 
     @Override
     public ImmutableMap<String, Object> getData() {
@@ -101,8 +99,11 @@ public class  AtomItemBuilder implements ItemBuilder {
     }
 
     @Override
-    public ItemBuilder add(ItemModifierData data) {
-        modifiers.put(data.getId(),data);
+    public ItemBuilder add(String id, ItemModifierData data) {
+        if( id == null ){
+            id = UUID.randomUUID().toString();
+        }
+        modifiers.put(id,data);
         return this;
     }
 

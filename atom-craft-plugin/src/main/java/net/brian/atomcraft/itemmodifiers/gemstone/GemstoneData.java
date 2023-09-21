@@ -11,15 +11,12 @@ import java.util.UUID;
 
 public class GemstoneData implements ItemModifierData {
 
-    @Getter
-    private String id;
     private String gemStoneBase64;
     private List<StatModifier> modifiers;
 
     public GemstoneData(String gemStoneBase64,List<StatModifier> modifiers){
         this.gemStoneBase64 = Objects.requireNonNull(gemStoneBase64);
         this.modifiers = Objects.requireNonNullElseGet(modifiers, ArrayList::new);
-        this.id = UUID.randomUUID().toString();
     }
 
 
@@ -27,7 +24,6 @@ public class GemstoneData implements ItemModifierData {
     public GemstoneData(){
 
     }
-
 
 
     @Override

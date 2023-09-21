@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 import net.brian.atomcraft.api.ConfiguredItem;
+import net.brian.atomcraft.api.ItemModifier;
 import net.brian.atomcraft.api.data.ItemJsonData;
+import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +38,9 @@ public class BukkitConfiguredItem implements ConfiguredItem{
     @Getter
     final ImmutableMap<String,Object> data;
 
+    @Getter
+    final ImmutableList<ItemModifier> modifiers;
+
     public BukkitConfiguredItem(ConfigurationSection config){
         this.id = config.getString("id","");
         this.material = Material.valueOf(config.getString("material",Material.STONE.name()));
@@ -44,9 +49,10 @@ public class BukkitConfiguredItem implements ConfiguredItem{
         this.flatPlayerStats = ImmutableMap.copyOf((HashMap<String, Double>) config.get("flat-player-stats"));
         this.relativePlayerStats = ImmutableMap.copyOf((HashMap<String, Double>) config.get("relative-player-stats"));
         this.data = ImmutableMap.copyOf((HashMap<String, Object>) config.get("data"));
+        this.modifiers = ImmutableList.copyOf((List<ItemModifier>) config.getList("modifiers",new ArrayList<>()));
     }
 
-    public BukkitConfiguredItem(String id, Material material, int modelData, List<String> rawLore, Map<String, Double> flatPlayerStats, Map<String, Double> relativePlayerStats, Map<String, Object> data) {
+    public BukkitConfiguredItem(String id, Material material, int modelData, List<String> rawLore, Map<String, Double> flatPlayerStats, Map<String, Double> relativePlayerStats, Map<String, Object> data, List<ItemModifier> modifiers) {
         this.id = id;
         this.material = material;
         this.modelData = modelData;
@@ -54,10 +60,11 @@ public class BukkitConfiguredItem implements ConfiguredItem{
         this.flatPlayerStats = ImmutableMap.copyOf(flatPlayerStats);
         this.relativePlayerStats = ImmutableMap.copyOf(relativePlayerStats);
         this.data = ImmutableMap.copyOf(data);
+        this.modifiers = ImmutableList.copyOf(modifiers);
     }
 
     public static BukkitConfiguredItem empty(String id){
-        return new BukkitConfiguredItem(id  ,Material.STONE,0,new ArrayList<>(),Map.of(),Map.of(),Map.of());
+        return new BukkitConfiguredItem(id  ,Material.STONE,0,new ArrayList<>(),Map.of(),Map.of(),Map.of(),List.of());
     }
 
 

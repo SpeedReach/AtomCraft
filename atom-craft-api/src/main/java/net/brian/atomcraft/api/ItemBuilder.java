@@ -6,6 +6,7 @@ import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.TreeMap;
@@ -31,7 +32,7 @@ public interface ItemBuilder {
 
     ItemBuilder setData(String id, Object data);
 
-    ItemBuilder add(ItemModifierData data);
+    ItemBuilder add(@Nullable String id, ItemModifierData data);
 
     Optional<Object> getData(String id);
 

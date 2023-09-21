@@ -2,7 +2,9 @@ package net.brian.atomcraft;
 
 import lombok.Getter;
 import net.brian.atomcraft.api.AtomCraft;
+import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.services.*;
+import net.brian.atomcraft.items.ItemJsonDeserializer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
@@ -34,6 +36,9 @@ public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
         instance = this;
         modifierRegistry = new ItemModifierRegistryImpl(this);
         gsonProvider = new net.brian.atomcraft.json.GsonProvider();
+
+        gsonProvider.registerTypeAdapter(ItemJsonData.class,new ItemJsonDeserializer(this));
+
     }
 
 }

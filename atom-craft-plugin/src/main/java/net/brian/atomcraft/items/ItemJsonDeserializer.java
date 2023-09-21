@@ -2,6 +2,7 @@ package net.brian.atomcraft.items;
 
 import com.google.gson.*;
 import net.brian.atomcraft.AtomCraftPlugin;
+import net.brian.atomcraft.api.AtomCraft;
 import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.data.ItemModifierData;
 import net.brian.atomcraft.itemdata.RawItemData;
@@ -15,6 +16,12 @@ import java.util.stream.Collectors;
 
 public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
 
+    private final AtomCraft plugin;
+
+    public ItemJsonDeserializer(AtomCraft plugin){
+        this.plugin = plugin;
+    }
+
 
     @Override
     public ItemJsonData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -25,7 +32,7 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
        return ItemJsonData.EMPTY;
     }
 
-    static ItemJsonData fromJson(JsonObject jsonObject,JsonDeserializationContext context){
+    ItemJsonData fromJson(JsonObject jsonObject,JsonDeserializationContext context){
         JsonElement jsonElement = jsonObject.get("id");
         final String id = jsonElement.isJsonPrimitive() ? jsonElement.getAsString() : "";
 
@@ -39,7 +46,7 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
                     .entrySet().stream().map(entry -> {
                         JsonObject modifierObject = entry.getValue().getAsJsonObject();
                         String modifierType = modifierObject.get("type").getAsString();
-                        Optional<ItemModifierData> data = AtomCraftPlugin.instance.getModifierRegistry().getModifier(modifierType).map(modifier -> context.deserialize(modifierObject.get("data"), modifier.getDataClass()));
+                        Optional<ItemModifierData> data = plugin.getModifierRegistry().getModifier(modifierType).map(modifier -> context.deserialize(modifierObject.get("data"), modifier.getDataClass()));
                         return Map.entry(entry.getKey(), data.orElse(new RawItemModifierData(entry.getKey(),modifierType, modifierObject)));
                     }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
 
@@ -49,7 +56,7 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
                 : dataElement.getAsJsonObject().asMap()
                     .entrySet().stream().map(entry -> {
                         JsonObject dataObject = entry.getValue().getAsJsonObject();;
-                        Optional<Object> optionalData = AtomCraftPlugin.instance.getDataRegistry().getDataClass(entry.getKey()).map(dataClass -> context.deserialize(dataObject, dataClass));
+                        Optional<Object> optionalData = plugin.getDataRegistry().getDataClass(entry.getKey()).map(dataClass -> context.deserialize(dataObject, dataClass));
                         return Map.entry(entry.getKey(), optionalData.orElse(new RawItemData(dataObject)));
                     }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
 

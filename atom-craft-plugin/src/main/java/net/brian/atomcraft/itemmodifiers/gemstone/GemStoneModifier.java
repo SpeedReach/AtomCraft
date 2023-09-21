@@ -7,9 +7,14 @@ import net.brian.atomcraft.api.data.ItemJsonData;
 
 public class GemStoneModifier implements ItemModifier<GemstoneData> {
 
-    @Getter
+
     public static final String ID = "gem_stone";
 
+
+    @Override
+    public String getID() {
+        return ID;
+    }
 
     @Override
     public ItemJsonData apply(ItemJsonData cache, GemstoneData modifierData) {
