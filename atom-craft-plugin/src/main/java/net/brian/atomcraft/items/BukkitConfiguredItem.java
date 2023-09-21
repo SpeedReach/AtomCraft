@@ -4,12 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 import net.brian.atomcraft.api.ConfiguredItem;
-import net.brian.atomcraft.api.ItemModifier;
-import net.brian.atomcraft.api.data.ItemJsonData;
-import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;

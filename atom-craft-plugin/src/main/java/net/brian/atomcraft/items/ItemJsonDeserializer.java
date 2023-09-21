@@ -1,12 +1,10 @@
 package net.brian.atomcraft.items;
 
 import com.google.gson.*;
-import net.brian.atomcraft.AtomCraftPlugin;
 import net.brian.atomcraft.api.AtomCraft;
+import net.brian.atomcraft.api.ItemModifierContainer;
 import net.brian.atomcraft.api.data.ItemJsonData;
-import net.brian.atomcraft.api.data.ItemModifierData;
 import net.brian.atomcraft.itemdata.RawItemData;
-import net.brian.atomcraft.itemdata.RawItemModifierData;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -41,13 +39,17 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
         final HashMap<String,Double> relativeStats = getStringDoubleHashMap(jsonObject.get("relative_player_stats"));
 
         JsonElement modifiersElement = jsonObject.get("modifiers");
-        final HashMap<String, ItemModifierData> modifiers = !modifiersElement.isJsonObject() ?
+        final HashMap<String, ItemModifierContainer> modifiers = !modifiersElement.isJsonObject() ?
                 new HashMap<>() : modifiersElement.getAsJsonObject().asMap()
                     .entrySet().stream().map(entry -> {
                         JsonObject modifierObject = entry.getValue().getAsJsonObject();
                         String modifierType = modifierObject.get("type").getAsString();
-                        Optional<ItemModifierData> data = plugin.getModifierRegistry().getModifier(modifierType).map(modifier -> context.deserialize(modifierObject.get("data"), modifier.getDataClass()));
-                        return Map.entry(entry.getKey(), data.orElse(new RawItemModifierData(entry.getKey(),modifierType, modifierObject)));
+                        boolean base = modifierObject.get("base").getAsBoolean();
+                        JsonElement rawData = modifierObject.get("data");
+                        Object data = plugin.getModifierRegistry().getModifier(modifierType)
+                                .map(modifier -> context.deserialize(rawData, modifier.getDataClass()))
+                                .orElse(new RawItemData(rawData));
+                        return Map.entry(entry.getKey(), new ItemModifierContainer(base,modifierType, data));
                     }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
 
 

@@ -3,9 +3,8 @@ package net.brian.atomcraft.items;
 import com.google.common.collect.ImmutableMap;
 import net.brian.atomcraft.AtomCraftPlugin;
 import net.brian.atomcraft.api.ItemBuilder;
-import net.brian.atomcraft.api.ItemModifier;
+import net.brian.atomcraft.api.ItemModifierContainer;
 import net.brian.atomcraft.api.data.ItemJsonData;
-import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,7 +23,7 @@ public class  AtomItemBuilder implements ItemBuilder {
     final List<String> rawLore;
     final HashMap<String, Double> flatPlayerStats;
     final HashMap<String, Double> relativePlayerStats;
-    final HashMap<String, ItemModifierData> modifiers;
+    final HashMap<String, ItemModifierContainer> modifiers;
     final HashMap<String, Object> data;
 
     public AtomItemBuilder(ConfiguredItem configuredItem){

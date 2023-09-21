@@ -1,15 +1,12 @@
 package net.brian.atomcraft.itemmodifiers.gemstone;
 
 import com.google.common.collect.ImmutableList;
-import lombok.Getter;
-import net.brian.atomcraft.api.data.ItemModifierData;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
-public class GemstoneData implements ItemModifierData {
+public class GemstoneData {
 
     private String gemStoneBase64;
     private List<StatModifier> modifiers;

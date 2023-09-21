@@ -1,22 +1,17 @@
 package net.brian.atomcraft.api;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
-import net.brian.atomcraft.api.data.ItemJsonData;
-import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Optional;
-import java.util.TreeMap;
 import java.util.function.BiFunction;
 
 public interface ItemBuilder {
 
     ImmutableMap<String, Object> getData();
 
-    ImmutableMap<String, ItemModifierData> getModifiers();
+    ImmutableMap<String, ItemModifierContainer> getModifiers();
 
     ImmutableMap<String, Double> getFlatPlayerStats();
     ImmutableMap<String, Double> getRelativePlayerStats();
@@ -32,7 +27,7 @@ public interface ItemBuilder {
 
     ItemBuilder setData(String id, Object data);
 
-    ItemBuilder add(@Nullable String id, ItemModifierData data);
+    <T extends ItemModifier<D>, D>ItemBuilder add(@Nullable String id, D data,Class<T> clazz);
 
     Optional<Object> getData(String id);
 

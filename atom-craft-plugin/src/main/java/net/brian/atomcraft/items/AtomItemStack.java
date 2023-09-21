@@ -7,7 +7,6 @@ import net.brian.atomcraft.api.AtomItem;
 import net.brian.atomcraft.api.ConfiguredItem;
 import net.brian.atomcraft.api.ItemBuilder;
 import net.brian.atomcraft.api.data.ItemJsonData;
-import net.brian.atomcraft.api.data.ItemModifierData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -85,7 +84,7 @@ public class AtomItemStack implements AtomItem {
     }
 
     @Override
-    public <T extends ItemModifierData> Optional<T> getModifier(String id,Class<T> clazz) {
+    public <T> Optional<T> getModifier(String id, Class<T> clazz) {
         ItemModifierData modifierData = modifiers.get(id);
         if(clazz.isInstance(modifierData)){
             return Optional.of((T) modifierData);

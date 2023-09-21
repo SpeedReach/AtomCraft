@@ -1,5 +1,6 @@
 package net.brian.atomcraft.api.data;
 
+import net.brian.atomcraft.api.ItemModifierContainer;
 import org.bukkit.entity.Item;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ public record ItemJsonData(
         String id,
         HashMap<String, Double> flatPlayerStats,
         HashMap<String, Double> relativePlayerStats,
-        HashMap<String, ItemModifierData> modifiers,
+        HashMap<String, ItemModifierContainer> modifiers,
         HashMap<String, Object> data
 ) {
 
