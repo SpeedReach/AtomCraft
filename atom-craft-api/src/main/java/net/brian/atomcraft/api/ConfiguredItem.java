@@ -16,5 +16,12 @@ public interface ConfiguredItem{
 
     ImmutableMap<String, Object> getData();
 
-    ImmutableList<Object> getModifiers();
+    ImmutableList<ConfiguredModifier> getModifiers();
+
+    public record ConfiguredModifier<T>(
+            ItemModifier.TypeInfo<T> typeInfo,
+            T data
+    ){
+
+    }
 }

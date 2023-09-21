@@ -35,7 +35,7 @@ public class BukkitConfiguredItem implements ConfiguredItem{
     final ImmutableMap<String,Object> data;
 
     @Getter
-    final ImmutableList<ItemModifierData> modifiers;
+    final ImmutableList<ConfiguredModifier> modifiers;
 
     public BukkitConfiguredItem(ConfigurationSection config){
         this.id = config.getString("id","");
@@ -45,10 +45,10 @@ public class BukkitConfiguredItem implements ConfiguredItem{
         this.flatPlayerStats = ImmutableMap.copyOf((HashMap<String, Double>) config.get("flat-player-stats"));
         this.relativePlayerStats = ImmutableMap.copyOf((HashMap<String, Double>) config.get("relative-player-stats"));
         this.data = ImmutableMap.copyOf((HashMap<String, Object>) config.get("data"));
-        this.modifiers = ImmutableList.copyOf((List<ItemModifierData>) config.getList("modifiers",new ArrayList<>()));
+        this.modifiers = ImmutableList.copyOf((List<ConfiguredModifier>) config.getList("modifiers",new ArrayList<>()));
     }
 
-    public BukkitConfiguredItem(String id, Material material, int modelData, List<String> rawLore, Map<String, Double> flatPlayerStats, Map<String, Double> relativePlayerStats, Map<String, Object> data, List<ItemModifierData> modifiers) {
+    public BukkitConfiguredItem(String id, Material material, int modelData, List<String> rawLore, Map<String, Double> flatPlayerStats, Map<String, Double> relativePlayerStats, Map<String, Object> data, List<ConfiguredModifier> modifiers) {
         this.id = id;
         this.material = material;
         this.modelData = modelData;

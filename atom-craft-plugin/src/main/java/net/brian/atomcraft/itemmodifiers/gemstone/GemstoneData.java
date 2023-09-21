@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class GemstoneData {
 
-    private String gemStoneBase64;
-    private List<StatModifier> modifiers;
+    public String gemStoneBase64;
+    public transient List<StatModifier> modifiers;
 
     public GemstoneData(String gemStoneBase64,List<StatModifier> modifiers){
         this.gemStoneBase64 = Objects.requireNonNull(gemStoneBase64);
@@ -20,12 +20,6 @@ public class GemstoneData {
     //This constructor is only for deserialization use
     public GemstoneData(){
 
-    }
-
-
-    @Override
-    public String getType() {
-        return GemStoneModifier.ID;
     }
 
 

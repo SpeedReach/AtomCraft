@@ -3,7 +3,6 @@ package net.brian.atomcraft.api;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -27,7 +26,7 @@ public interface ItemBuilder {
 
     ItemBuilder setData(String id, Object data);
 
-    <T extends ItemModifier<D>, D>ItemBuilder add(@Nullable String id, D data,Class<T> clazz);
+    <D> ItemBuilder addModifier(ItemModifier.TypeInfo<D> typeInfo, D data);
 
     Optional<Object> getData(String id);
 

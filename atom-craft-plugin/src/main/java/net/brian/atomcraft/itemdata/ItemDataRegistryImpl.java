@@ -9,6 +9,9 @@ public class ItemDataRegistryImpl implements ItemDataRegistry {
 
     private final HashMap<String,Class<?>> dataClasses = new HashMap<>();
 
+    public ItemDataRegistryImpl(){
+    }
+
     @Override
     public <T> void register(String id, Class<T> dataClass) {
         dataClasses.put(id,dataClass);

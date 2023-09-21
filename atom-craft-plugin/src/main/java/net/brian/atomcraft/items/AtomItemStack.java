@@ -3,10 +3,9 @@ package net.brian.atomcraft.items;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 import net.brian.atomcraft.AtomCraftPlugin;
-import net.brian.atomcraft.api.AtomItem;
-import net.brian.atomcraft.api.ConfiguredItem;
-import net.brian.atomcraft.api.ItemBuilder;
+import net.brian.atomcraft.api.*;
 import net.brian.atomcraft.api.data.ItemJsonData;
+import net.brian.atomcraft.api.exception.CfgItemNotFoundException;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -20,7 +19,7 @@ public class AtomItemStack implements AtomItem {
     final ItemStack itemStack;
     final HashMap<String, Double> flatPlayerStats;
     final HashMap<String, Double> relativePlayerStats;
-    final HashMap<String, ItemModifierData> modifiers;
+    final HashMap<String, ItemModifierContainer> modifiers;
     final HashMap<String, Object> data;
 
 
@@ -30,8 +29,7 @@ public class AtomItemStack implements AtomItem {
         this.modifiers = jsonData.modifiers();
         this.data = jsonData.data();
         this.itemStack = itemStack;
-
-        this.id = (String) jsonData.data().getOrDefault("id","");
+        this.id = jsonData.id();
     }
 
 
@@ -46,7 +44,7 @@ public class AtomItemStack implements AtomItem {
     }
 
     @Override
-    public ImmutableMap<String, ItemModifierData> getModifiers() {
+    public ImmutableMap<String, ItemModifierContainer> getModifiers() {
         return ImmutableMap.copyOf(modifiers);
     }
 
@@ -56,21 +54,8 @@ public class AtomItemStack implements AtomItem {
     }
 
     @Override
-    public ItemBuilder toBuilder() {
-        ItemMeta meta = itemStack.getItemMeta();
-        int modelData = 0;
-        List<String> rawLore = null;
-
-        if (meta != null) {
-            modelData = meta.getCustomModelData();
-            rawLore = meta.getLore();
-        }
-        if(rawLore == null){
-            rawLore = new ArrayList<>();
-        }
-
-        Optional<ConfiguredItem> configuredItem = AtomCraftPlugin.instance.getConfigItemRegistry().getItem(id);
-        return  null;
+    public ItemBuilder toBuilder() throws CfgItemNotFoundException {
+        return new AtomItemBuilder(this);
     }
 
     @Override
@@ -84,19 +69,20 @@ public class AtomItemStack implements AtomItem {
     }
 
     @Override
-    public <T> Optional<T> getModifier(String id, Class<T> clazz) {
-        ItemModifierData modifierData = modifiers.get(id);
-        if(clazz.isInstance(modifierData)){
-            return Optional.of((T) modifierData);
+    public <T> Optional<T> getModifier(String id,ItemModifier.TypeInfo<T> typeInfo) {
+        ItemModifierContainer container = this.modifiers.get(id);
+        if (container == null || !Objects.equals(container.type(), typeInfo.id())) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        return Optional.of(typeInfo.dataClass().cast(data));
     }
+
 
     @Override
     public <T> Optional<T> getData(String id, Class<T> clazz) {
         Object data = this.data.get(id);
         if(clazz.isInstance(data)){
-            return Optional.of((T) data);
+            return Optional.of(clazz.cast(data));
         }
         return Optional.empty();
     }

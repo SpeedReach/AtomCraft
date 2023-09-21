@@ -1,8 +1,9 @@
-package net.brian.atomcraft;
+package net.brian.atomcraft.itemmodifiers;
 
 import net.brian.atomcraft.api.AtomCraft;
 import net.brian.atomcraft.api.ItemModifier;
 import net.brian.atomcraft.api.services.ItemModifierRegistry;
+import net.brian.atomcraft.itemmodifiers.gemstone.GemStoneModifier;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -13,13 +14,14 @@ public class ItemModifierRegistryImpl implements ItemModifierRegistry {
 
     private final HashMap<String ,ItemModifier<?>> modifiers = new HashMap<>();
 
-    ItemModifierRegistryImpl(AtomCraft plugin){
+    public ItemModifierRegistryImpl(AtomCraft plugin){
         this.plugin = plugin;
+        register(new GemStoneModifier());
     }
 
     @Override
-    public <T extends ItemModifier<D>, D> void register(String ID, T modifier) {
-        modifiers.put(ID,modifier);
+    public <T extends ItemModifier<D>, D> void register(T modifier) {
+        modifiers.put(modifier.getTypeInfo().id(),modifier);
 
     }
 

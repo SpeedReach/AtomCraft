@@ -7,13 +7,12 @@ import net.brian.atomcraft.api.data.ItemJsonData;
 
 public class GemStoneModifier implements ItemModifier<GemstoneData> {
 
-
     public static final String ID = "gem_stone";
-
+    public static final TypeInfo<GemstoneData> TYPE_INFO = new TypeInfo<>(ID,GemstoneData.class);
 
     @Override
-    public String getID() {
-        return ID;
+    public TypeInfo<GemstoneData> getTypeInfo() {
+        return TYPE_INFO;
     }
 
     @Override
@@ -25,6 +24,7 @@ public class GemStoneModifier implements ItemModifier<GemstoneData> {
                         return modifier.value();
                     }
                     else{
+
                         return oldValue + modifier.value();
                     }
                 });
@@ -46,8 +46,4 @@ public class GemStoneModifier implements ItemModifier<GemstoneData> {
         return 2;
     }
 
-    @Override
-    public Class<GemstoneData> getDataClass() {
-        return GemstoneData.class;
-    }
 }

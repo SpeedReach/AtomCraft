@@ -34,9 +34,9 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
         JsonElement jsonElement = jsonObject.get("id");
         final String id = jsonElement.isJsonPrimitive() ? jsonElement.getAsString() : "";
 
-        final HashMap<String,Double> flatStats = getStringDoubleHashMap(jsonObject.get("flat_player_stats"));
+        final HashMap<String,Double> flatStats = getStringDoubleHashMap(jsonObject,"flat_player_stats");
 
-        final HashMap<String,Double> relativeStats = getStringDoubleHashMap(jsonObject.get("relative_player_stats"));
+        final HashMap<String,Double> relativeStats = getStringDoubleHashMap(jsonObject,"relative_player_stats");
 
         JsonElement modifiersElement = jsonObject.get("modifiers");
         final HashMap<String, ItemModifierContainer> modifiers = !modifiersElement.isJsonObject() ?
@@ -47,7 +47,7 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
                         boolean base = modifierObject.get("base").getAsBoolean();
                         JsonElement rawData = modifierObject.get("data");
                         Object data = plugin.getModifierRegistry().getModifier(modifierType)
-                                .map(modifier -> context.deserialize(rawData, modifier.getDataClass()))
+                                .map(modifier -> context.deserialize(rawData, modifier.getTypeInfo().dataClass()))
                                 .orElse(new RawItemData(rawData));
                         return Map.entry(entry.getKey(), new ItemModifierContainer(base,modifierType, data));
                     }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
@@ -66,10 +66,12 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
     }
 
 
-    private static HashMap<String, Double> getStringDoubleHashMap(JsonElement flatStatsElement) {
+    private static HashMap<String, Double> getStringDoubleHashMap(JsonObject jsonObject,String id) {
+        JsonElement element = jsonObject.get(id);
+
         HashMap<String, Double> flatStats;
-        if (flatStatsElement.isJsonObject()){
-            flatStats=flatStatsElement.getAsJsonObject().asMap()
+        if (element != null && element.isJsonObject()){
+            flatStats=element.getAsJsonObject().asMap()
                     .entrySet().stream().map(entry -> Map.entry(entry.getKey(), entry.getValue().getAsDouble())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
         }
         else{

@@ -4,12 +4,16 @@ import net.brian.atomcraft.api.data.ItemJsonData;
 
 public interface ItemModifier<T> {
 
-    String getID();
+    TypeInfo<T> getTypeInfo();
 
     ItemJsonData apply(ItemJsonData builderCache, T modifierData);
 
     int getPriority();
 
-    Class<T> getDataClass();
+    public record TypeInfo<T>(
+            String id,
+            Class<T> dataClass
+    ){
 
+    }
 }

@@ -34,6 +34,7 @@ public class PersistentDataItemBridge implements AtomItemStackBridge {
     @Override
     public ItemMeta writeJson(ItemMeta itemMeta, ItemJsonData jsonData){
         String data = plugin.getGsonProvider().getGson().toJson(jsonData);
+        //System.out.println(data);
         itemMeta.getPersistentDataContainer().set(ATOM_ITEM_KEY,PersistentDataType.STRING,data);
         return itemMeta;
     }

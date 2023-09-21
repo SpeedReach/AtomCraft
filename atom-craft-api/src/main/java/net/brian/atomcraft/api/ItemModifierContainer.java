@@ -1,7 +1,7 @@
 package net.brian.atomcraft.api;
 
 public record ItemModifierContainer(
-        boolean isBase,
+        boolean base,
         String type,
         Object data
 ) {
