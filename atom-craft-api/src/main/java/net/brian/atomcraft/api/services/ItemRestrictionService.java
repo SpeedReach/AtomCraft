@@ -4,9 +4,11 @@ import net.brian.atomcraft.api.AtomItem;
 import net.brian.atomcraft.api.ItemRestriction;
 import org.bukkit.entity.Player;
 
-public interface ItemRestrictionRegistry {
 
-        void register(String id, ItemRestriction restriction);
+
+public interface ItemRestrictionService {
+
+        void register(ItemRestriction restriction);
 
         boolean test(Player player, AtomItem atomItem);
 

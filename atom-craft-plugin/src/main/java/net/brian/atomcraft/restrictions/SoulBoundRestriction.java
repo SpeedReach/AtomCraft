@@ -1,8 +1,11 @@
 package net.brian.atomcraft.restrictions;
 
 import net.brian.atomcraft.api.AtomItem;
+import net.brian.atomcraft.api.ItemBuilder;
 import net.brian.atomcraft.api.ItemRestriction;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class SoulBoundRestriction implements ItemRestriction {
 
@@ -15,4 +18,10 @@ public class SoulBoundRestriction implements ItemRestriction {
                 .map(s -> s.equals(player.getUniqueId().toString()))
                 .orElse(true);
     }
+
+    public ItemBuilder apply(ItemBuilder itemBuilder, UUID playerUUID){
+        itemBuilder.setData(ID,playerUUID);
+        return itemBuilder;
+    }
+
 }

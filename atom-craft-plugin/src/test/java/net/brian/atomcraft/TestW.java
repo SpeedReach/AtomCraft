@@ -3,6 +3,7 @@ package net.brian.atomcraft;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import net.brian.atomcraft.api.AtomCraft;
+import net.brian.atomcraft.api.AtomItem;
 import net.brian.atomcraft.api.ConfiguredItem;
 import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.itemmodifiers.gemstone.GemStoneModifier;
@@ -59,9 +60,9 @@ public class TestW {
                 "ATTACK_DAMAGE"
         ))));
         ItemStack item = itemBuilder.build();
-        ItemJsonData json = plugin.getItemStackBridge().readJson(item.getItemMeta());
-        assert json.flatPlayerStats().get("ATTACK_DAMAGE") == 20.0;
-        assert json.relativePlayerStats().get("ATTACK_DAMAGE") == 10.0;
+        AtomItem atomItem = plugin.getLiveItemCache().getItem(item).get();
+        assert atomItem.getFlatPlayerStat("ATTACK_DAMAGE") == 20.0;
+        assert atomItem.getRelativePlayerStat("ATTACK_DAMAGE") == 10.0;
     }
 
 }

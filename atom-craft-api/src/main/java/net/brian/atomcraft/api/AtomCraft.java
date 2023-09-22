@@ -17,4 +17,6 @@ public interface AtomCraft {
 
     AtomItemStackBridge getItemStackBridge();
 
+    LiveItemCache getLiveItemCache();
+
 }

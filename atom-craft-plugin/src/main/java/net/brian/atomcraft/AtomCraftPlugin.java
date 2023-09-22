@@ -2,7 +2,6 @@ package net.brian.atomcraft;
 
 import lombok.Getter;
 import net.brian.atomcraft.api.AtomCraft;
-import net.brian.atomcraft.api.AtomItem;
 import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.services.*;
 import net.brian.atomcraft.config.FileConfigItemRegistry;
@@ -11,7 +10,7 @@ import net.brian.atomcraft.itemmodifiers.ItemModifierRegistryImpl;
 import net.brian.atomcraft.items.AtomLiveItemCache;
 import net.brian.atomcraft.items.ItemJsonDeserializer;
 import net.brian.atomcraft.items.PersistentDataItemBridge;
-import net.brian.atomcraft.restrictions.AtomItemRestrictionRegistry;
+import net.brian.atomcraft.restrictions.AtomItemRestrictionService;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
@@ -41,7 +40,7 @@ public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
     private AtomItemStackBridge itemStackBridge;
 
     @Getter
-    private ItemRestrictionRegistry restrictionRegistry;
+    private ItemRestrictionService restrictionRegistry;
 
     @Override
     public void onLoad() {
@@ -52,7 +51,8 @@ public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
         configItemRegistry = new FileConfigItemRegistry(this);
         itemStackBridge = new PersistentDataItemBridge(this);
         liveItemCache = new AtomLiveItemCache(this);
-        restrictionRegistry = new AtomItemRestrictionRegistry();
+        restrictionRegistry = new AtomItemRestrictionService();
+
 
         gsonProvider.registerTypeAdapter(ItemJsonData.class,new ItemJsonDeserializer(this));
         gsonProvider.registerTypeAdapter(RawItemData.class,new RawItemData.Serializer());

@@ -19,20 +19,18 @@ public class AtomItemStack implements AtomItem {
     @Getter
     final UUID uniqueId;
 
-    final ItemStack itemStack;
     final HashMap<String, Double> flatPlayerStats;
     final HashMap<String, Double> relativePlayerStats;
     final HashMap<String, ItemModifierContainer> modifiers;
     final HashMap<String, Object> data;
 
 
-    public AtomItemStack(UUID uniqueId,ItemStack itemStack, ItemJsonData jsonData) {
+    public AtomItemStack(UUID uniqueId,ItemJsonData jsonData) {
         this.uniqueId = uniqueId;
         this.flatPlayerStats = jsonData.flatPlayerStats();
         this.relativePlayerStats = jsonData.relativePlayerStats();
         this.modifiers = jsonData.modifiers();
         this.data = jsonData.data();
-        this.itemStack = itemStack;
         this.configId = jsonData.configId();
     }
 

@@ -34,7 +34,7 @@ public class AtomLiveItemCache implements LiveItemCache {
         return readUID(meta).map(uid ->
            cacheMap.compute(uid,(key,entry)->{
                if(entry == null){
-                   return new CacheEntry(new AtomItemStack(uid,itemStack,plugin.getItemStackBridge().readJson(meta)),System.currentTimeMillis());
+                   return new CacheEntry(new AtomItemStack(uid,plugin.getItemStackBridge().readJson(meta)),System.currentTimeMillis());
                }
                else{
                    return new CacheEntry(entry.item(),System.currentTimeMillis());
