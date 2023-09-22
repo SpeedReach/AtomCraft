@@ -2,9 +2,11 @@ package net.brian.atomcraft.items;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
+import net.brian.atomcraft.AtomCraftPlugin;
 import net.brian.atomcraft.api.*;
 import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.exception.CfgItemNotFoundException;
+import net.brian.atomcraft.api.exception.NotAtomItemException;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -15,7 +17,7 @@ public class AtomItemStack implements AtomItem {
     final String configId;
 
     @Getter
-    final String uniqueId;
+    final UUID uniqueId;
 
     final ItemStack itemStack;
     final HashMap<String, Double> flatPlayerStats;
@@ -24,8 +26,8 @@ public class AtomItemStack implements AtomItem {
     final HashMap<String, Object> data;
 
 
-    public AtomItemStack(ItemStack itemStack, ItemJsonData jsonData){
-        this.uniqueId = jsonData.uniqueId();
+    public AtomItemStack(UUID uniqueId,ItemStack itemStack, ItemJsonData jsonData) {
+        this.uniqueId = uniqueId;
         this.flatPlayerStats = jsonData.flatPlayerStats();
         this.relativePlayerStats = jsonData.relativePlayerStats();
         this.modifiers = jsonData.modifiers();

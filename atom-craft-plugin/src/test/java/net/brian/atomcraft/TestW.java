@@ -53,11 +53,15 @@ public class TestW {
                 10.0,
                 "ATTACK_DAMAGE"
         ))));
+        itemBuilder.addModifier(GemStoneModifier.TYPE_INFO,new GemstoneData("",List.of(new GemstoneData.StatModifier(
+                GemstoneData.StatModifierType.RELATIVE,
+                10.0,
+                "ATTACK_DAMAGE"
+        ))));
         ItemStack item = itemBuilder.build();
         ItemJsonData json = plugin.getItemStackBridge().readJson(item.getItemMeta());
-        System.out.println(json);
+        assert json.flatPlayerStats().get("ATTACK_DAMAGE") == 20.0;
+        assert json.relativePlayerStats().get("ATTACK_DAMAGE") == 10.0;
     }
-
-
 
 }

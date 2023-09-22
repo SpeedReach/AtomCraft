@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public record ItemJsonData(
         String configId,
-        String uniqueId,
         HashMap<String, Double> flatPlayerStats,
         HashMap<String, Double> relativePlayerStats,
         HashMap<String, ItemModifierContainer> modifiers,
@@ -16,7 +15,7 @@ public record ItemJsonData(
 ) {
 
 
-    public static ItemJsonData EMPTY = new ItemJsonData("", UUID.randomUUID().toString(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+    public static ItemJsonData EMPTY = new ItemJsonData("", new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
 
 
 }

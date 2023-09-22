@@ -4,12 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import net.brian.atomcraft.api.exception.CfgItemNotFoundException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface AtomItem {
 
     String getConfigId();
 
-    String getUniqueId();
+    UUID getUniqueId();
 
     ImmutableMap<String, Double> getFlatPlayerStats();
     ImmutableMap<String, Double> getRelativePlayerStats();

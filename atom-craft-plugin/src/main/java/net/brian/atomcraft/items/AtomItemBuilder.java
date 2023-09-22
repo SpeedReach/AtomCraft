@@ -140,7 +140,7 @@ public class  AtomItemBuilder implements ItemBuilder {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setCustomModelData(modelData);
-        final ItemJsonData cache = new ItemJsonData(id,UUID.randomUUID().toString(),flatPlayerStats,relativePlayerStats,modifiers,data);
+        final ItemJsonData cache = new ItemJsonData(id,flatPlayerStats,relativePlayerStats,modifiers,data);
         List<ItemModifierDataPair<Object>> validModifiers = new ArrayList<>();
         modifiers.forEach((modifierKey,modifierData) -> {
             AtomCraftPlugin.getInstance().getModifierRegistry().getModifier(modifierData.type()).ifPresent(modifier -> {
@@ -155,6 +155,7 @@ public class  AtomItemBuilder implements ItemBuilder {
         }
         meta = AtomCraftPlugin.getInstance().getItemStackBridge().writeJson(meta,cache);
         meta.setLore(rawLore);
+        AtomCraftPlugin.getInstance().getLiveItemCache().writeUID(meta,UUID.randomUUID());
         itemStack.setItemMeta(meta);
         return itemStack;
     }
