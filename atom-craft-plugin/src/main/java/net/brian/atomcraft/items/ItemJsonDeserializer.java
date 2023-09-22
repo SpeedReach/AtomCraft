@@ -33,7 +33,7 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
     ItemJsonData fromJson(JsonObject jsonObject,JsonDeserializationContext context){
         JsonElement jsonElement = jsonObject.get("id");
         final String id = jsonElement.isJsonPrimitive() ? jsonElement.getAsString() : "";
-
+        final String uniqueId = jsonObject.get("unique_id").getAsString();
         final HashMap<String,Double> flatStats = getStringDoubleHashMap(jsonObject,"flat_player_stats");
 
         final HashMap<String,Double> relativeStats = getStringDoubleHashMap(jsonObject,"relative_player_stats");
@@ -62,7 +62,7 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
                         return Map.entry(entry.getKey(), optionalData.orElse(new RawItemData(dataObject)));
                     }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
 
-        return new ItemJsonData(id,flatStats,relativeStats,modifiers,data);
+        return new ItemJsonData(id,uniqueId,flatStats,relativeStats,modifiers,data);
     }
 
 

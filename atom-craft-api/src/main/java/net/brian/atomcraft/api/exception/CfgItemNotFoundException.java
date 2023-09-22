@@ -9,6 +9,6 @@ public class CfgItemNotFoundException extends Exception {
 
     @Override
     public String getMessage() {
-        return "Item with id " + cfgId + " not found in config!";
+        return "Item with configId " + cfgId + " not found in config!";
     }
 }

@@ -1,16 +1,14 @@
 package net.brian.atomcraft.api.data;
 
 import net.brian.atomcraft.api.ItemModifierContainer;
-import org.bukkit.entity.Item;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 
 public record ItemJsonData(
-        String id,
+        String configId,
+        String uniqueId,
         HashMap<String, Double> flatPlayerStats,
         HashMap<String, Double> relativePlayerStats,
         HashMap<String, ItemModifierContainer> modifiers,
@@ -18,7 +16,7 @@ public record ItemJsonData(
 ) {
 
 
-    public static ItemJsonData EMPTY = new ItemJsonData("",new HashMap<>(),new HashMap<>(),new HashMap<>(),new HashMap<>());
+    public static ItemJsonData EMPTY = new ItemJsonData("", UUID.randomUUID().toString(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
 
 
 }

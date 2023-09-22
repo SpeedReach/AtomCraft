@@ -41,7 +41,7 @@ public class  AtomItemBuilder implements ItemBuilder {
 
     public AtomItemBuilder(AtomItemStack atomItemStack) throws CfgItemNotFoundException {
         ConfiguredItem configuredItem = AtomCraftPlugin.getInstance().getConfigItemRegistry()
-                .getItem(atomItemStack.getId()).orElseThrow(()->new CfgItemNotFoundException(atomItemStack.getId()));
+                .getItem(atomItemStack.getConfigId()).orElseThrow(()->new CfgItemNotFoundException(atomItemStack.getConfigId()));
         id = configuredItem.getId();
         material = configuredItem.getMaterial();
         modelData = configuredItem.getModelData();
@@ -140,7 +140,7 @@ public class  AtomItemBuilder implements ItemBuilder {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setCustomModelData(modelData);
-        final ItemJsonData cache = new ItemJsonData(id,flatPlayerStats,relativePlayerStats,modifiers,data);
+        final ItemJsonData cache = new ItemJsonData(id,UUID.randomUUID().toString(),flatPlayerStats,relativePlayerStats,modifiers,data);
         List<ItemModifierDataPair<Object>> validModifiers = new ArrayList<>();
         modifiers.forEach((modifierKey,modifierData) -> {
             AtomCraftPlugin.getInstance().getModifierRegistry().getModifier(modifierData.type()).ifPresent(modifier -> {

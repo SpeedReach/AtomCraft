@@ -2,19 +2,20 @@ package net.brian.atomcraft.items;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
-import net.brian.atomcraft.AtomCraftPlugin;
 import net.brian.atomcraft.api.*;
 import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.exception.CfgItemNotFoundException;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
 public class AtomItemStack implements AtomItem {
 
     @Getter
-    final String id;
+    final String configId;
+
+    @Getter
+    final String uniqueId;
 
     final ItemStack itemStack;
     final HashMap<String, Double> flatPlayerStats;
@@ -24,14 +25,14 @@ public class AtomItemStack implements AtomItem {
 
 
     public AtomItemStack(ItemStack itemStack, ItemJsonData jsonData){
+        this.uniqueId = jsonData.uniqueId();
         this.flatPlayerStats = jsonData.flatPlayerStats();
         this.relativePlayerStats = jsonData.relativePlayerStats();
         this.modifiers = jsonData.modifiers();
         this.data = jsonData.data();
         this.itemStack = itemStack;
-        this.id = jsonData.id();
+        this.configId = jsonData.configId();
     }
-
 
     @Override
     public ImmutableMap<String, Double> getFlatPlayerStats() {
