@@ -55,7 +55,6 @@ public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
         liveItemCache = new AtomLiveItemCache(this);
         restrictionRegistry = new AtomItemRestrictionService();
 
-
         gsonProvider.registerTypeAdapter(ItemJsonData.class,new ItemJsonDeserializer(this));
         gsonProvider.registerTypeAdapter(RawItemData.class,new RawItemData.Serializer());
 

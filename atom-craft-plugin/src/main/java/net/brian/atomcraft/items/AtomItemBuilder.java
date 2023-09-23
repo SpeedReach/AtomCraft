@@ -39,7 +39,7 @@ public class  AtomItemBuilder implements ItemBuilder {
                 .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue,(a,b)->b,HashMap::new));
     }
 
-    public AtomItemBuilder(AtomItemStack atomItemStack) throws CfgItemNotFoundException {
+    public AtomItemBuilder(AtomItem atomItemStack) throws CfgItemNotFoundException {
         ConfiguredItem configuredItem = AtomCraftPlugin.getInstance().getConfigItemRegistry()
                 .getItem(atomItemStack.getConfigId()).orElseThrow(()->new CfgItemNotFoundException(atomItemStack.getConfigId()));
         id = configuredItem.getId();
