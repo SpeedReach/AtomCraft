@@ -1,6 +1,7 @@
 package net.brian.atomcraft;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.brian.atomcraft.api.AtomCraft;
 import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.services.*;
@@ -28,6 +29,7 @@ public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
     private ItemDataRegistry dataRegistry;
 
     @Getter
+    @Setter
     private PlayerStatsImplBridge statsImplBridge;
 
     @Getter
