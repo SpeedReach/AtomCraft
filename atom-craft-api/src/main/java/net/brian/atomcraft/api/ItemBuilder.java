@@ -1,10 +1,12 @@
 package net.brian.atomcraft.api;
 
 import com.google.common.collect.ImmutableMap;
+import net.brian.atomcraft.api.utils.Pair;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public interface ItemBuilder {
 
@@ -27,6 +29,9 @@ public interface ItemBuilder {
     ItemBuilder setData(String id, Object data);
 
     <D> ItemBuilder addModifier(ItemModifier.TypeInfo<D> typeInfo, D data);
+
+    void removeModifier(Function<Pair<String,ItemModifierContainer>, Boolean> function);
+    void removeModifier(String id);
 
     Optional<Object> getData(String id);
 

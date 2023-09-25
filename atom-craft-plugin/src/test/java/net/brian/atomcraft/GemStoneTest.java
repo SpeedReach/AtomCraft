@@ -13,11 +13,13 @@ import net.brian.atomcraft.items.BukkitConfiguredItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class GemStoneTest {
     private static ServerMock server;
@@ -48,6 +50,7 @@ public class GemStoneTest {
                 Map.of(),
                 List.of()
         );
+        plugin.getConfigItemRegistry().register(configuredItem);
         ItemStack item = new AtomItemBuilder(configuredItem).build();
 
         //Every ItemStack possesses a distinct Unique ID,
@@ -65,8 +68,17 @@ public class GemStoneTest {
         // The Unique ID is updated here.
         item = itemBuilder.build();
         atomItem = plugin.getLiveItemCache().getItem(item).get();
-        assert atomItem.getFlatPlayerStat("ATTACK_DAMAGE") == 20.0;
-        assert atomItem.getRelativePlayerStat("ATTACK_DAMAGE") == 10.0;
+        Assertions.assertEquals(20.0,atomItem.getFlatPlayerStat("ATTACK_DAMAGE"));
+
+        itemBuilder = new AtomItemBuilder(atomItem);
+        itemBuilder.removeModifier((pair)-> {
+            System.out.println(Objects.equals(pair.second().type(), GemStoneModifier.ID));
+            return Objects.equals(pair.second().type(), GemStoneModifier.ID);
+        });
+
+        item = itemBuilder.build();
+        atomItem = plugin.getLiveItemCache().getItem(item).get();
+        Assertions.assertEquals(10.0,atomItem.getFlatPlayerStat("ATTACK_DAMAGE"));
 
     }
 

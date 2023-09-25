@@ -6,12 +6,14 @@ import net.brian.atomcraft.api.*;
 import net.brian.atomcraft.api.data.ItemJsonData;
 import net.brian.atomcraft.api.data.ItemModifierDataPair;
 import net.brian.atomcraft.api.exception.CfgItemNotFoundException;
+import net.brian.atomcraft.api.utils.Pair;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -46,9 +48,9 @@ public class  AtomItemBuilder implements ItemBuilder {
         material = configuredItem.getMaterial();
         modelData = configuredItem.getModelData();
         rawLore = configuredItem.getRawLore();
-        flatPlayerStats = new HashMap<>(atomItemStack.getFlatPlayerStats());
-        relativePlayerStats = new HashMap<>(atomItemStack.getRelativePlayerStats());
-        data = new HashMap<>(atomItemStack.getData());
+        flatPlayerStats = new HashMap<>(configuredItem.getFlatPlayerStats());
+        relativePlayerStats = new HashMap<>(configuredItem.getRelativePlayerStats());
+        data = new HashMap<>(configuredItem.getData());
         this.modifiers = new HashMap<>(atomItemStack.getModifiers().size()+configuredItem.getModifiers().size());
 
         //Filter out base modifiers, and replace with configured modifiers
@@ -125,6 +127,21 @@ public class  AtomItemBuilder implements ItemBuilder {
     public <D> ItemBuilder addModifier(ItemModifier.TypeInfo<D> typeInfo, D data) {
         modifiers.put(UUID.randomUUID().toString(),new ItemModifierContainer(false,typeInfo.id(),data));
         return this;
+    }
+
+    /**
+     * Removes all modifiers that satisfy the given function.
+     * The function is passed a pair of the modifier's id and the modifier's data.
+     * @param function
+     */
+    @Override
+    public void removeModifier(Function<Pair<String,ItemModifierContainer>, Boolean> function) {
+        modifiers.entrySet().removeIf((entry) -> function.apply(Pair.of(entry.getKey(),entry.getValue())));
+    }
+
+    @Override
+    public void removeModifier(String id) {
+        modifiers.remove(id);
     }
 
 

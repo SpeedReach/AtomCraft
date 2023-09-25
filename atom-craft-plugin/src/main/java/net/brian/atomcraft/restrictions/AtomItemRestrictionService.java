@@ -3,7 +3,6 @@ package net.brian.atomcraft.restrictions;
 import net.brian.atomcraft.api.AtomItem;
 import net.brian.atomcraft.api.ItemRestriction;
 import net.brian.atomcraft.api.services.ItemRestrictionService;
-import net.brian.atomcraft.utils.Pair;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

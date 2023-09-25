@@ -61,12 +61,12 @@ public class AtomItemStack implements AtomItem {
 
     @Override
     public double getFlatPlayerStat(String id) {
-        return flatPlayerStats.get(id);
+        return flatPlayerStats.getOrDefault(id,0.0);
     }
 
     @Override
     public double getRelativePlayerStat(String id) {
-        return relativePlayerStats.get(id);
+        return relativePlayerStats.getOrDefault(id,0.0);
     }
 
     @Override

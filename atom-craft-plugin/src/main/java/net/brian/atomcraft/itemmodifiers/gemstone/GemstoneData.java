@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class GemstoneData {
 
-    public String gemStoneBase64;
-    public transient List<StatModifier> modifiers;
+    private String gemStoneBase64;
+    private List<StatModifier> modifiers;
 
     public GemstoneData(String gemStoneBase64,List<StatModifier> modifiers){
         this.gemStoneBase64 = Objects.requireNonNull(gemStoneBase64);
