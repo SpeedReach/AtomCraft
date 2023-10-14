@@ -1,6 +1,7 @@
 package net.brian.atomcraft.api;
 
 import com.google.common.collect.ImmutableMap;
+import net.brian.atomcraft.api.models.json.ItemModifierContainer;
 import net.brian.atomcraft.api.exception.CfgItemNotFoundException;
 
 import java.util.Optional;

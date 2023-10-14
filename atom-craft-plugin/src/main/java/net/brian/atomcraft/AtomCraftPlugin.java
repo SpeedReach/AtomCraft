@@ -3,7 +3,7 @@ package net.brian.atomcraft;
 import lombok.Getter;
 import lombok.Setter;
 import net.brian.atomcraft.api.AtomCraft;
-import net.brian.atomcraft.api.data.ItemJsonData;
+import net.brian.atomcraft.api.models.json.ItemJsonData;
 import net.brian.atomcraft.api.services.*;
 import net.brian.atomcraft.config.FileConfigItemRegistry;
 import net.brian.atomcraft.itemdata.RawItemData;

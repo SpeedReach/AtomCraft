@@ -3,17 +3,17 @@ package net.brian.atomcraft.items;
 import com.google.common.collect.ImmutableMap;
 import net.brian.atomcraft.AtomCraftPlugin;
 import net.brian.atomcraft.api.*;
-import net.brian.atomcraft.api.data.ItemJsonData;
-import net.brian.atomcraft.api.data.ItemModifierDataPair;
+import net.brian.atomcraft.api.models.ConfiguredItem;
+import net.brian.atomcraft.api.models.json.ItemJsonData;
+import net.brian.atomcraft.api.models.json.ItemModifierContainer;
+import net.brian.atomcraft.api.models.ItemModifierDataPair;
 import net.brian.atomcraft.api.exception.CfgItemNotFoundException;
-import net.brian.atomcraft.api.utils.Pair;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -29,39 +29,28 @@ public class  AtomItemBuilder implements ItemBuilder {
     final HashMap<String, Object> data;
 
     public AtomItemBuilder(ConfiguredItem configuredItem)  {
-        id = configuredItem.getId();
-        material = configuredItem.getMaterial();
-        modelData = configuredItem.getModelData();
-        rawLore = configuredItem.getRawLore();
+        id = configuredItem.configId();
+        material = configuredItem.material();
+        modelData = configuredItem.modelData();
+        rawLore = configuredItem.rawLore();
 
-        flatPlayerStats = new HashMap<>(configuredItem.getFlatPlayerStats());
-        relativePlayerStats = new HashMap<>(configuredItem.getRelativePlayerStats());
-        data = new HashMap<>(configuredItem.getData());
-        this.modifiers = configuredItem.getModifiers().stream().map((d) -> Map.entry(UUID.randomUUID().toString(),new ItemModifierContainer(true,d.typeInfo().id(),d.data())))
-                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue,(a,b)->b,HashMap::new));
+        flatPlayerStats = new HashMap<>(configuredItem.flatPlayerStats());
+        relativePlayerStats = new HashMap<>(configuredItem.relativePlayerStats());
+        data = new HashMap<>(configuredItem.data());
+        modifiers = new HashMap<>();
     }
 
-    public AtomItemBuilder(AtomItem atomItemStack) throws CfgItemNotFoundException {
+    public AtomItemBuilder(AtomItemStack atomItemStack) throws CfgItemNotFoundException {
         ConfiguredItem configuredItem = AtomCraftPlugin.getInstance().getConfigItemRegistry()
                 .getItem(atomItemStack.getConfigId()).orElseThrow(()->new CfgItemNotFoundException(atomItemStack.getConfigId()));
-        id = configuredItem.getId();
-        material = configuredItem.getMaterial();
-        modelData = configuredItem.getModelData();
-        rawLore = configuredItem.getRawLore();
-        flatPlayerStats = new HashMap<>(configuredItem.getFlatPlayerStats());
-        relativePlayerStats = new HashMap<>(configuredItem.getRelativePlayerStats());
-        data = new HashMap<>(configuredItem.getData());
-        this.modifiers = new HashMap<>(atomItemStack.getModifiers().size()+configuredItem.getModifiers().size());
-
-        //Filter out base modifiers, and replace with configured modifiers
-        atomItemStack.getModifiers().forEach((key,value)->{
-            if(!value.base()){
-                modifiers.put(key,value);
-            }
-        });
-        configuredItem.getModifiers().forEach((d) -> {
-            modifiers.put(UUID.randomUUID().toString(),new ItemModifierContainer(true,d.typeInfo().id(),d.data()));
-        });
+        id = configuredItem.configId();
+        material = configuredItem.material();
+        modelData = configuredItem.modelData();
+        rawLore = configuredItem.rawLore();
+        flatPlayerStats = new HashMap<>(atomItemStack.getFlatPlayerStats());
+        relativePlayerStats = new HashMap<>(atomItemStack.getRelativePlayerStats());
+        data = new HashMap<>(atomItemStack.getData());
+        modifiers = new HashMap<>(atomItemStack.getModifiers());
     }
 
     @Override
@@ -125,23 +114,8 @@ public class  AtomItemBuilder implements ItemBuilder {
 
     @Override
     public <D> ItemBuilder addModifier(ItemModifier.TypeInfo<D> typeInfo, D data) {
-        modifiers.put(UUID.randomUUID().toString(),new ItemModifierContainer(false,typeInfo.id(),data));
+        modifiers.put(UUID.randomUUID().toString(),new ItemModifierContainer(typeInfo.id(),data));
         return this;
-    }
-
-    /**
-     * Removes all modifiers that satisfy the given function.
-     * The function is passed a pair of the modifier's id and the modifier's data.
-     * @param function
-     */
-    @Override
-    public void removeModifier(Function<Pair<String,ItemModifierContainer>, Boolean> function) {
-        modifiers.entrySet().removeIf((entry) -> function.apply(Pair.of(entry.getKey(),entry.getValue())));
-    }
-
-    @Override
-    public void removeModifier(String id) {
-        modifiers.remove(id);
     }
 
 
@@ -157,7 +131,7 @@ public class  AtomItemBuilder implements ItemBuilder {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setCustomModelData(modelData);
-        final ItemJsonData cache = new ItemJsonData(id,flatPlayerStats,relativePlayerStats,modifiers,data);
+        final ItemJsonData cache = new ItemJsonData(id,UUID.randomUUID().toString(),flatPlayerStats,relativePlayerStats,modifiers,data);
         List<ItemModifierDataPair<Object>> validModifiers = new ArrayList<>();
         modifiers.forEach((modifierKey,modifierData) -> {
             AtomCraftPlugin.getInstance().getModifierRegistry().getModifier(modifierData.type()).ifPresent(modifier -> {
@@ -172,7 +146,6 @@ public class  AtomItemBuilder implements ItemBuilder {
         }
         meta = AtomCraftPlugin.getInstance().getItemStackBridge().writeJson(meta,cache);
         meta.setLore(rawLore);
-        AtomCraftPlugin.getInstance().getLiveItemCache().writeUID(meta,UUID.randomUUID());
         itemStack.setItemMeta(meta);
         return itemStack;
     }

@@ -1,6 +1,6 @@
 package net.brian.atomcraft.api.services;
 
-import net.brian.atomcraft.api.ConfiguredItem;
+import net.brian.atomcraft.api.models.ConfiguredItem;
 
 import java.util.Optional;
 

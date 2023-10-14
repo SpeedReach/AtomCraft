@@ -1,11 +1,13 @@
 package net.brian.atomcraft.items;
 
 import net.brian.atomcraft.AtomCraftPlugin;
-import net.brian.atomcraft.api.data.ItemJsonData;
+import net.brian.atomcraft.api.models.json.ItemJsonData;
 import net.brian.atomcraft.api.services.AtomItemStackBridge;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.Optional;
 
 public class PersistentDataItemBridge implements AtomItemStackBridge {
 
@@ -19,16 +21,14 @@ public class PersistentDataItemBridge implements AtomItemStackBridge {
     }
 
     @Override
-    public ItemJsonData readJson(ItemMeta itemMeta){
+    public Optional<ItemJsonData> readJson(ItemMeta itemMeta){
         String json = itemMeta.getPersistentDataContainer().get(ATOM_ITEM_KEY, PersistentDataType.STRING);
-        ItemJsonData data = null;
+
         if (json == null){
-            data = ItemJsonData.EMPTY;
+            return Optional.empty();
         }
-        else{
-            data = plugin.getGsonProvider().getGson().fromJson(json, ItemJsonData.class);
-        }
-        return data;
+        ItemJsonData data = plugin.getGsonProvider().getGson().fromJson(json, ItemJsonData.class);
+        return Optional.of(data);
     }
 
     @Override
@@ -38,6 +38,5 @@ public class PersistentDataItemBridge implements AtomItemStackBridge {
         itemMeta.getPersistentDataContainer().set(ATOM_ITEM_KEY,PersistentDataType.STRING,data);
         return itemMeta;
     }
-
 
 }

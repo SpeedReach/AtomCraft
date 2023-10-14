@@ -1,9 +1,7 @@
 package net.brian.atomcraft.itemmodifiers.gemstone;
 
-import lombok.Getter;
-import net.brian.atomcraft.api.ItemBuilder;
 import net.brian.atomcraft.api.ItemModifier;
-import net.brian.atomcraft.api.data.ItemJsonData;
+import net.brian.atomcraft.api.models.json.ItemJsonData;
 
 public class GemStoneModifier implements ItemModifier<GemstoneData> {
 
@@ -17,7 +15,7 @@ public class GemStoneModifier implements ItemModifier<GemstoneData> {
 
     @Override
     public ItemJsonData apply(ItemJsonData cache, GemstoneData modifierData) {
-        for(GemstoneData.StatModifier modifier : modifierData.getModifiers()){
+        for(GemstoneData.StatModifier modifier : modifierData.modifiers()){
             switch (modifier.type()){
                 case FLAT -> cache.flatPlayerStats().compute(modifier.target(), (ignore, oldValue) -> {
                     if(oldValue == null){

@@ -1,6 +1,6 @@
 package net.brian.atomcraft.api;
 
-import net.brian.atomcraft.api.data.ItemJsonData;
+import net.brian.atomcraft.api.models.json.ItemJsonData;
 
 public interface ItemModifier<T> {
 

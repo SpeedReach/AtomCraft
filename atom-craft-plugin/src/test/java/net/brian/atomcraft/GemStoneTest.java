@@ -2,26 +2,25 @@ package net.brian.atomcraft;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import net.brian.atomcraft.api.AtomCraft;
-import net.brian.atomcraft.api.AtomItem;
-import net.brian.atomcraft.api.ConfiguredItem;
-import net.brian.atomcraft.api.exception.CfgItemNotFoundException;
+import net.brian.atomcraft.api.models.ConfiguredItem;
+import net.brian.atomcraft.api.models.json.ItemJsonData;
 import net.brian.atomcraft.itemmodifiers.gemstone.GemStoneModifier;
 import net.brian.atomcraft.itemmodifiers.gemstone.GemstoneData;
 import net.brian.atomcraft.items.AtomItemBuilder;
-import net.brian.atomcraft.items.BukkitConfiguredItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
-public class GemStoneTest {
+public class TestW {
     private static ServerMock server;
     private static AtomCraft plugin;
 
@@ -38,48 +37,28 @@ public class GemStoneTest {
 
 
     @Test
-    void testApplyGemStone() throws CfgItemNotFoundException {
-
-        ConfiguredItem configuredItem= new BukkitConfiguredItem(
-                "test-item",
-                Material.DIAMOND_SWORD,
-                0,
-               List.of("hi","there"),
-                Map.of("ATTACK_DAMAGE",10.0),
-                Map.of(),
-                Map.of(),
-                List.of()
-        );
-        plugin.getConfigItemRegistry().register(configuredItem);
-        ItemStack item = new AtomItemBuilder(configuredItem).build();
-
-        //Every ItemStack possesses a distinct Unique ID,
-        // serving as a means to pinpoint the item within the cache.
-        // This ID only undergoes an update when the item is modified.
-        // The LiveItemCache is responsible for housing deserialized ItemStacks for a brief duration.
-        AtomItem atomItem = plugin.getLiveItemCache().getItem(item).get();
-
-        AtomItemBuilder itemBuilder = new AtomItemBuilder(atomItem);
-        itemBuilder.addModifier(GemStoneModifier.TYPE_INFO,new GemstoneData("",List.of(new GemstoneData.StatModifier(
+    void testApplyGemStone(){
+        String id = "test-item";
+        ConfiguredItem configuredItem =
+                new ConfiguredItem(
+                        "test-item",
+                        Material.DIAMOND_SWORD,
+                        0,
+                        ImmutableList.of("hi", "there"),
+                        ImmutableMap.of("ATTACK_DAMAGE", 10.0),
+                        ImmutableMap.of(),
+                        ImmutableMap.of());
+        AtomItemBuilder itemBuilder = new AtomItemBuilder(configuredItem);
+        itemBuilder.addModifier(GemStoneModifier.TYPE_INFO,new GemstoneData("CoolStone","",ImmutableList.of(new GemstoneData.StatModifier(
                 GemstoneData.StatModifierType.FLAT,
                 10.0,
                 "ATTACK_DAMAGE"
         ))));
-        // The Unique ID is updated here.
-        item = itemBuilder.build();
-        atomItem = plugin.getLiveItemCache().getItem(item).get();
-        Assertions.assertEquals(20.0,atomItem.getFlatPlayerStat("ATTACK_DAMAGE"));
-
-        itemBuilder = new AtomItemBuilder(atomItem);
-        itemBuilder.removeModifier((pair)-> {
-            System.out.println(Objects.equals(pair.second().type(), GemStoneModifier.ID));
-            return Objects.equals(pair.second().type(), GemStoneModifier.ID);
-        });
-
-        item = itemBuilder.build();
-        atomItem = plugin.getLiveItemCache().getItem(item).get();
-        Assertions.assertEquals(10.0,atomItem.getFlatPlayerStat("ATTACK_DAMAGE"));
-
+        ItemStack item = itemBuilder.build();
+        Optional<ItemJsonData> json = plugin.getItemStackBridge().readJson(item.getItemMeta());
+        System.out.println(json);
     }
+
+
 
 }

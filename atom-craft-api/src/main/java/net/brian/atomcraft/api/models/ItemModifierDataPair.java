@@ -1,4 +1,4 @@
-package net.brian.atomcraft.api.data;
+package net.brian.atomcraft.api.models;
 
 import net.brian.atomcraft.api.ItemModifier;
 

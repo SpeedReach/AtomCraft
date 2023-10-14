@@ -1,7 +1,7 @@
 package net.brian.atomcraft.config;
 
 import net.brian.atomcraft.AtomCraftPlugin;
-import net.brian.atomcraft.api.ConfiguredItem;
+import net.brian.atomcraft.api.models.ConfiguredItem;
 import net.brian.atomcraft.api.services.ConfigItemRegistry;
 
 import java.util.HashMap;
@@ -25,6 +25,6 @@ public class FileConfigItemRegistry implements ConfigItemRegistry  {
 
     @Override
     public void register(ConfiguredItem item) {
-        items.put(item.getId(),item);
+        items.put(item.configId(),item);
     }
 }
