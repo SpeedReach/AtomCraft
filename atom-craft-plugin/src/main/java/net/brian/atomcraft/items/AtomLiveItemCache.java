@@ -2,6 +2,7 @@ package net.brian.atomcraft.items;
 
 import net.brian.atomcraft.AtomCraftPlugin;
 import net.brian.atomcraft.api.AtomItem;
+import net.brian.atomcraft.api.models.json.ItemJsonData;
 import net.brian.atomcraft.api.services.LiveItemCache;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -31,16 +32,16 @@ public class AtomLiveItemCache implements LiveItemCache {
     public Optional<AtomItem> getItem(ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         if(meta == null) return Optional.empty();
-        return readUID(meta).map(uid ->
-           cacheMap.compute(uid,(key,entry)->{
-               if(entry == null){
-                   return new CacheEntry(new AtomItemStack(uid,plugin.getItemStackBridge().readJson(meta)),System.currentTimeMillis());
-               }
-               else{
-                   return new CacheEntry(entry.item(),System.currentTimeMillis());
-               }
-           } )
-        ).map(CacheEntry::item);
+        Optional<ItemJsonData> optJsonData = plugin.getItemStackBridge().readJson(meta);
+        return optJsonData.flatMap(itemJsonData -> readUID(meta).map(uid ->
+                cacheMap.compute(uid, (key, entry) -> {
+                    if (entry == null) {
+                        return new CacheEntry(new AtomItemStack(uid, itemJsonData), System.currentTimeMillis());
+                    } else {
+                        return new CacheEntry(entry.item(), System.currentTimeMillis());
+                    }
+                })
+        ).map(CacheEntry::item));
     }
 
     @Override
