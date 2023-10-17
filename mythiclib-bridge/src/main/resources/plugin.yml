@@ -1,0 +1,6 @@
+name: AtomCraft-MythicLib-Bridge
+main: net.brian.atomcraft.MythicLibBridgePlugin
+version: 1.0.0
+depend:
+  - AtomCraft
+  - MythicLib

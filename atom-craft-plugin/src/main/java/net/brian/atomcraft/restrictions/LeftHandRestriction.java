@@ -27,7 +27,7 @@ public class LeftHandRestriction implements ItemRestriction {
         return !AtomCraftPlugin.getInstance().getLiveItemCache().readUID(offHandMeta).equals(atomItem.getUniqueId());
     }
 
-    public ItemBuilder apply(ItemBuilder itemBuilder){
+    public static ItemBuilder apply(ItemBuilder itemBuilder){
         itemBuilder.getData().put(ID,true);
         return itemBuilder;
     }

@@ -19,7 +19,7 @@ public class SoulBoundRestriction implements ItemRestriction {
                 .orElse(true);
     }
 
-    public ItemBuilder apply(ItemBuilder itemBuilder, UUID playerUUID){
+    public static ItemBuilder apply(ItemBuilder itemBuilder, UUID playerUUID){
         itemBuilder.getData().put(ID,playerUUID);
         return itemBuilder;
     }

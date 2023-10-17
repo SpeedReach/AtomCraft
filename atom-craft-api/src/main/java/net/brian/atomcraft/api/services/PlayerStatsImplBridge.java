@@ -2,6 +2,7 @@ package net.brian.atomcraft.api.services;
 
 
 import net.brian.atomcraft.api.AtomItem;
+import org.bukkit.entity.Player;
 
 /**
  * This interface is used to bridge the gap between AtomCraft and the player stats implementation.
@@ -9,6 +10,6 @@ import net.brian.atomcraft.api.AtomItem;
  */
 public interface PlayerStatsImplBridge {
 
-    void equip(AtomItem atomItem,AtomEquipmentSlot slot);
+    void equip(Player player, AtomItem atomItem, AtomEquipmentSlot slot);
 
 }

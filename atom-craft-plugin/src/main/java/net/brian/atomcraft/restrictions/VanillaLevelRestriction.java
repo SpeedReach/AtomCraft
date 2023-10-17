@@ -18,7 +18,7 @@ public class VanillaLevelRestriction implements ItemRestriction {
                 .orElse(true);
     }
 
-    public ItemBuilder apply(ItemBuilder itemBuilder, int level){
+    public static ItemBuilder apply(ItemBuilder itemBuilder, int level){
         itemBuilder.getData().put(ID,level);
         return itemBuilder;
     }

@@ -28,8 +28,8 @@ public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
     @Getter
     private ItemDataRegistry dataRegistry;
 
-    @Getter
     @Setter
+    @Getter
     private PlayerStatsImplBridge statsImplBridge;
 
     @Getter
@@ -57,7 +57,7 @@ public class AtomCraftPlugin extends JavaPlugin implements AtomCraft {
 
         gsonProvider.registerTypeAdapter(ItemJsonData.class,new ItemJsonDeserializer(this));
         gsonProvider.registerTypeAdapter(RawItemData.class,new RawItemData.Serializer());
-
     }
+
 
 }
