@@ -6,7 +6,7 @@ public interface ItemModifier<T> {
 
     TypeInfo<T> getTypeInfo();
 
-    ItemJsonData apply(ItemJsonData builderCache, T modifierData);
+    void apply(ItemJsonData builderCache, T modifierData);
 
     int getPriority();
 

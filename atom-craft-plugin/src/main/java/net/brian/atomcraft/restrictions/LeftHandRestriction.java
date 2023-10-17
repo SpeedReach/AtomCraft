@@ -28,7 +28,7 @@ public class LeftHandRestriction implements ItemRestriction {
     }
 
     public ItemBuilder apply(ItemBuilder itemBuilder){
-        itemBuilder.setData(ID,true);
+        itemBuilder.getData().put(ID,true);
         return itemBuilder;
     }
 

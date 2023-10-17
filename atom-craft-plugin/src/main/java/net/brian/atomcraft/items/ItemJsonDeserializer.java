@@ -36,7 +36,6 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
             throw new JsonParseException("ItemJsonData must have a configId");
         }
         final String id = configElement.getAsString();
-        final String uniqueId = jsonObject.get(ItemJsonData.UNIQUE_ID_KEY).getAsString();
         final HashMap<String,Double> flatStats = getStringDoubleHashMap(jsonObject,ItemJsonData.FLAT_PLAYER_STATS_KEY);
 
         final HashMap<String,Double> relativeStats = getStringDoubleHashMap(jsonObject,ItemJsonData.RELATIVE_PLAYER_STATS_KEY);
@@ -63,7 +62,7 @@ public class ItemJsonDeserializer implements JsonDeserializer<ItemJsonData> {
                         return Map.entry(entry.getKey(), optionalData.orElse(new RawItemData(dataObject)));
                     }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new)):new HashMap<>();
 
-        return new ItemJsonData(id,uniqueId,flatStats,relativeStats,modifiers,data);
+        return new ItemJsonData(id,flatStats,relativeStats,modifiers,data);
     }
 
 

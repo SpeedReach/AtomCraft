@@ -3,7 +3,6 @@ package net.brian.atomcraft.itemmodifiers;
 import net.brian.atomcraft.api.AtomCraft;
 import net.brian.atomcraft.api.ItemModifier;
 import net.brian.atomcraft.api.services.ItemModifierRegistry;
-import net.brian.atomcraft.itemmodifiers.gemstone.GemStoneModifier;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -16,7 +15,6 @@ public class ItemModifierRegistryImpl implements ItemModifierRegistry {
 
     public ItemModifierRegistryImpl(AtomCraft plugin){
         this.plugin = plugin;
-        register(new GemStoneModifier());
     }
 
     @Override

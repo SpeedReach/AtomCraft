@@ -1,12 +1,16 @@
-package net.brian.atomcraft.itemmodifiers.gemstone;
+package net.brian.atomcraft.addons.modifiers.gemstone;
 
 import net.brian.atomcraft.api.ItemModifier;
 import net.brian.atomcraft.api.models.json.ItemJsonData;
 
-public class GemStoneModifier implements ItemModifier<GemstoneData> {
+public final class GemStoneModifier implements ItemModifier<GemstoneData> {
 
     public static final String ID = "gem_stone";
     public static final TypeInfo<GemstoneData> TYPE_INFO = new TypeInfo<>(ID,GemstoneData.class);
+    public static final GemStoneModifier INSTANCE = new GemStoneModifier();
+
+    private GemStoneModifier(){}
+
 
     @Override
     public TypeInfo<GemstoneData> getTypeInfo() {
@@ -14,7 +18,7 @@ public class GemStoneModifier implements ItemModifier<GemstoneData> {
     }
 
     @Override
-    public ItemJsonData apply(ItemJsonData cache, GemstoneData modifierData) {
+    public void apply(ItemJsonData cache, GemstoneData modifierData) {
         for(GemstoneData.StatModifier modifier : modifierData.modifiers()){
             switch (modifier.type()){
                 case FLAT -> cache.flatPlayerStats().compute(modifier.target(), (ignore, oldValue) -> {
@@ -36,14 +40,11 @@ public class GemStoneModifier implements ItemModifier<GemstoneData> {
                 });
             }
         }
-        return cache;
     }
 
     @Override
     public int getPriority() {
         return 2;
     }
-
-
 
 }

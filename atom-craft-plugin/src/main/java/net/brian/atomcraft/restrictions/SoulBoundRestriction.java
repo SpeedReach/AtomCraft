@@ -20,7 +20,7 @@ public class SoulBoundRestriction implements ItemRestriction {
     }
 
     public ItemBuilder apply(ItemBuilder itemBuilder, UUID playerUUID){
-        itemBuilder.setData(ID,playerUUID);
+        itemBuilder.getData().put(ID,playerUUID);
         return itemBuilder;
     }
 

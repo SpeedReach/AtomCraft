@@ -19,7 +19,7 @@ public class VanillaLevelRestriction implements ItemRestriction {
     }
 
     public ItemBuilder apply(ItemBuilder itemBuilder, int level){
-        itemBuilder.setData(ID,level);
+        itemBuilder.getData().put(ID,level);
         return itemBuilder;
     }
 

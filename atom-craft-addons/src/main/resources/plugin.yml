@@ -1,0 +1,4 @@
+name: "AtomCraftAddons"
+main: "net.brian.atomcraft.addons.AtomCraftAddons"
+version: 1.0
+

@@ -1,4 +1,4 @@
-package net.brian.atomcraft.itemmodifiers.gemstone;
+package net.brian.atomcraft.addons.modifiers.gemstone;
 
 
 import java.util.List;
